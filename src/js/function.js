@@ -31,3 +31,14 @@ export function hideMoreBtn() {
 export function showMoreBtn() {
   loadMoreBtn.classList.remove('is-hidden');
 }
+
+export function smoothScroll() {
+  const { height: cardHeight } = document
+    .querySelector('.gallery')
+    .getBoundingClientRect();
+
+  window.scrollBy({
+    top: cardHeight * 2,
+    behavior: 'smooth',
+  });
+}
