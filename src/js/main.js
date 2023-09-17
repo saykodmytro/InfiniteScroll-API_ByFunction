@@ -1,6 +1,6 @@
-import { PixabayAPI } from './pixabay-api';
+import { PixabayAPI } from './pixabay-api-class';
 import { createGalleryCard } from './createGalleryCard';
-import { galleryEl, loadMoreBtn, loaderEl, formEl } from './refs';
+import { galleryEl, target, formEl } from './refs';
 
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
@@ -10,11 +10,27 @@ import {
   onEmpty,
   addLoader,
   hideLoader,
-  showMoreBtn,
-  hideMoreBtn,
   messageTotalPhoto,
-  smoothScroll,
+  messageLastPage,
 } from './function.js';
+
+let currentPage = 1;
+
+let options = {
+  root: null,
+  rootMargin: '300px',
+  threshold: 1.0,
+};
+
+let observer = new IntersectionObserver(onLoad, options);
+function onLoad(entries, observer) {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      currentPage += 1;
+      onMoreData();
+    }
+  });
+}
 
 const pixabayApi = new PixabayAPI(40);
 let lightbox = new SimpleLightbox('.gallery a', {
@@ -24,7 +40,6 @@ let lightbox = new SimpleLightbox('.gallery a', {
 });
 
 formEl.addEventListener('submit', onSubmit);
-loadMoreBtn.addEventListener('click', onMoreData);
 
 async function onSubmit(evt) {
   evt.preventDefault();
@@ -41,19 +56,14 @@ async function onSubmit(evt) {
   try {
     const resp = await pixabayApi.getPhotos();
     galleryEl.innerHTML = createGalleryCard(resp.hits);
-    smoothScroll();
+    observer.observe(target);
     lightbox.refresh();
-
+    // smoothScroll();
     if (resp.totalHits === 0) {
-      hideMoreBtn();
+      hideLoader();
       return onError();
     }
-
-    addLoader();
-
     messageTotalPhoto(resp.totalHits);
-    resp.total > pixabayApi.perPage ? showMoreBtn() : hideMoreBtn();
-
     hideLoader();
   } catch (error) {
     console.log(error);
@@ -67,11 +77,11 @@ async function onMoreData(evt) {
     const resp = await pixabayApi.getPhotos();
     galleryEl.insertAdjacentHTML('beforeend', createGalleryCard(resp.hits));
     lightbox.refresh();
-    smoothScroll();
-
     const averagePage = Math.ceil(resp.total / pixabayApi.perPage);
     if (averagePage === pixabayApi.page) {
-      hideMoreBtn();
+      hideLoader();
+      observer.unobserve(target);
+      messageLastPage();
     }
   } catch (error) {
     console.log(error);
