@@ -1,5 +1,5 @@
-export function createGalleryCard(gallery) {
-  return gallery
+export function createGalleryCard(gallery, container) {
+  const markup = gallery
     .map(image => {
       return `<div class="photo-card">
      <a class = "gallary__item" href="${image.largeImageURL}">
@@ -21,4 +21,6 @@ export function createGalleryCard(gallery) {
   </div>`;
     })
     .join('');
+  // container.innerHTML = markup;
+  container.insertAdjacentHTML('beforeend', markup);
 }

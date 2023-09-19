@@ -1,5 +1,6 @@
 import { Notify } from 'notiflix';
 import { loaderEl } from './refs';
+import { galleryEl } from './refs';
 
 export function messageTotalPhoto(obj) {
   return Notify.success(`Hooray! We found ${obj} images.`);
@@ -11,8 +12,13 @@ export function onError() {
   );
 }
 
-export function onEmpty() {
-  return Notify.warning('Input is empty');
+export function chekOnEmpty(obj) {
+  if (obj === '') {
+    galleryEl.innerHTML = '';
+    Notify.warning('Input is empty');
+    return true;
+  }
+  return false;
 }
 
 export function messageLastPage() {
