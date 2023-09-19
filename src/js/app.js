@@ -7,18 +7,25 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 import {
   onError,
-  onEmpty,
   chekOnEmpty,
   addLoader,
   hideLoader,
   messageTotalPhoto,
   messageLastPage,
+  smoothScroll,
 } from './function.js';
+// ****************************************************************************
 
 let inputQuery = '';
 let page = 1;
 
-// ****************************************************************************
+const lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionPosition: 'bottom',
+  captionDelay: 250,
+});
+
+//****************************************************************************
 
 let options = {
   root: null,
@@ -59,14 +66,12 @@ function onSubmit(evt) {
 function displayPhotos() {
   getPhotosFun(inputQuery, page)
     .then(result => {
-      console.log('result :', result);
-      console.log('result.hits:', result.hits);
-      console.log('result.totalHits: ', result.totalHits);
-      console.log('page: ', page);
       if (result.totalHits === 0) {
         return onError();
       }
       createGalleryCard(result.hits, galleryEl);
+      lightbox.refresh();
+      smoothScroll();
       observer.observe(target);
 
       const lastPage = Math.ceil(result.totalHits / 40);
@@ -89,26 +94,3 @@ function displayPhotos() {
 }
 
 // ****************************************************************************
-
-// getPhotosFun(query, currentPage)
-//   .then(result => {
-//     console.log('query: ', query);
-//     result.page += 1;
-//     galleryEl.insertAdjacentHTML(
-//       'beforeend',
-//       createGalleryCard(result.hits)
-//     );
-//     console.log('insertAdjacentHTML');
-//     console.log('result.totalHits ', result.totalHits);
-//     const lastPage = Math.ceil(result.totalHits / 40);
-//     console.log('lastPage:', lastPage);
-//     if (lastPage === currentPage) {
-//       console.log('message');
-//       messageLastPage();
-//       observer.unobserve(target);
-
-// galleryEl.innerHTML = createGalleryCard(result.hits);
-
-// if ((page = 1)) {
-//   messageTotalPhoto(result.total);
-// }

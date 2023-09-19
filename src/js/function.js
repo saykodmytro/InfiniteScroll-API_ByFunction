@@ -36,3 +36,17 @@ export function hideLoader() {
   loaderEl.classList.remove('active');
   console.log('hideLoader');
 }
+
+
+export function smoothScroll() {
+  setTimeout(() => {
+    const { height: cardHeight } = document
+      .querySelector('.gallery')
+      .getBoundingClientRect();
+
+    window.scrollBy({
+      top: cardHeight * 2,
+      behavior: 'smooth',
+    });
+  }, 500);
+}
