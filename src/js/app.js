@@ -55,21 +55,19 @@ function onLoad(entries, observe) {
     }
   });
 }
+
 // ****************************************************************************
 
 function onSubmit(evt) {
   evt.preventDefault();
-  currentPage = 1;
   const query = evt.currentTarget.elements['user-search-query'].value.trim();
   if (query === '') {
-    console.log('pusto');
     galleryEl.innerHTML = '';
     return onEmpty();
   }
   addLoader();
   getPhotosFun(query, currentPage)
     .then(result => {
-      // Результат доступний тут, можна його використовувати
       galleryEl.innerHTML = createGalleryCard(result.hits);
       if (result.totalHits === 0) {
         return onError();
@@ -77,8 +75,7 @@ function onSubmit(evt) {
       observer.observe(target);
     })
     .catch(err => {
-      // Обробка помилок, якщо вони сталися під час виконання запиту або функції
-      console.error('Помилка виконання запиту або функції:', err);
+      console.error(err);
     })
     .finally(() => {
       console.log('finally');
