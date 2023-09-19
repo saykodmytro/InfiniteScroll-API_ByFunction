@@ -13,11 +13,15 @@ import {
   messageTotalPhoto,
   messageLastPage,
   smoothScroll,
+  onToTopBtn,
+  onScroll,
 } from './function.js';
 // ****************************************************************************
 
 let inputQuery = '';
 let page = 1;
+
+onToTopBtn();
 
 const lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
@@ -71,7 +75,6 @@ function displayPhotos() {
       }
       createGalleryCard(result.hits, galleryEl);
       lightbox.refresh();
-      smoothScroll();
       observer.observe(target);
 
       const lastPage = Math.ceil(result.totalHits / 40);

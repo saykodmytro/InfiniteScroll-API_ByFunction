@@ -1,6 +1,5 @@
 import { Notify } from 'notiflix';
-import { loaderEl } from './refs';
-import { galleryEl } from './refs';
+import { galleryEl, toTopBtn, loaderEl } from './refs';
 
 export function messageTotalPhoto(obj) {
   return Notify.success(`Hooray! We found ${obj} images.`);
@@ -37,7 +36,6 @@ export function hideLoader() {
   console.log('hideLoader');
 }
 
-
 export function smoothScroll() {
   setTimeout(() => {
     const { height: cardHeight } = document
@@ -49,4 +47,25 @@ export function smoothScroll() {
       behavior: 'smooth',
     });
   }, 500);
+}
+
+window.addEventListener('scroll', onScroll);
+toTopBtn.addEventListener('click', onToTopBtn);
+
+export function onScroll() {
+  const scrolled = window.scrollY;
+  const coords = document.documentElement.clientHeight;
+
+  if (scrolled > coords) {
+    toTopBtn.classList.add('btn-to-top-visible');
+  }
+  if (scrolled < coords) {
+    toTopBtn.classList.remove('btn-to-top-visible');
+  }
+}
+
+export function onToTopBtn() {
+  if (window.scrollY > 0) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }
