@@ -14,7 +14,6 @@ import {
   messageLastPage,
   smoothScroll,
   onToTopBtn,
-  onScroll,
 } from './function.js';
 // ****************************************************************************
 
@@ -73,6 +72,7 @@ function displayPhotos() {
       if (result.totalHits === 0) {
         return onError();
       }
+      addLoader();
       createGalleryCard(result.hits, galleryEl);
       lightbox.refresh();
       observer.observe(target);
