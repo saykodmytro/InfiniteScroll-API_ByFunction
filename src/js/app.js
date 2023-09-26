@@ -95,32 +95,3 @@ async function displayPhotos() {
 
 // ****************************************************************************
 
-// function displayPhotos() {
-//   getPhotosFun(inputQuery, page)
-//     .then(result => {
-//       if (result.totalHits === 0) {
-//         return onError();
-//       }
-//       addLoader();
-//       createGalleryCard(result.hits, galleryEl);
-//       lightbox.refresh();
-//       observer.observe(target);
-
-//       const lastPage = Math.ceil(result.totalHits / 40);
-//       if (lastPage === page) {
-//         console.log('messageLastPage');
-//         messageLastPage();
-//         observer.unobserve(target);
-//       }
-//       if (page === 1) {
-//         messageTotalPhoto(result.total);
-//       }
-//     })
-//     .catch(err => {
-//       console.error(err);
-//     })
-//     .finally(() => {
-//       console.log('finally');
-//       hideLoader();
-//     });
-// }

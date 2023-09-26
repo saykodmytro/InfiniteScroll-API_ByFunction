@@ -21,6 +21,5 @@ export function createGalleryCard(gallery, container) {
   </div>`;
     })
     .join('');
-  // container.innerHTML = markup;
   container.insertAdjacentHTML('beforeend', markup);
 }
