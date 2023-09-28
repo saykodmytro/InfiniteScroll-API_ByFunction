@@ -56,7 +56,6 @@ function onSubmit(evt) {
   galleryEl.innerHTML = '';
   const query = evt.currentTarget.elements['user-search-query'].value.trim();
   inputQuery = query;
-  console.log('Input: ', inputQuery);
 
   if (chekOnEmpty(inputQuery)) {
     return;
@@ -94,4 +93,3 @@ async function displayPhotos() {
 }
 
 // ****************************************************************************
-
